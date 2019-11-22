@@ -1,0 +1,19 @@
+﻿.active-blue input[type=text] {
+    padding-left: 0px;
+    border-radius: unset;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom: 1px solid #ced4da;
+    box-shadow: 0 1px 0 0 #ced4da;
+    min-width: 330px;
+}
+
+.active-blue input[type=text]:focus:not([readonly]) {
+    border-bottom: 1px solid #007bff;
+    box-shadow: 0 1px 0 0 #007bff;
+}
+
+.active-blue input[type=text]::placeholder {
+    color: #007bff;
+}
