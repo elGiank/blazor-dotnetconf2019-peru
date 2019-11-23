@@ -1,5 +1,4 @@
-﻿using System;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace GitHubSearcher.Data
 {
@@ -17,7 +16,6 @@ namespace GitHubSearcher.Data
         [JsonPropertyName("score")]
         public double Score { get; set; }
 
-        //[JsonPropertyName("repos_url")]
         public string ReposUrl => $"{ProfileUrl}?tab=repositories";
 
     }

@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -16,10 +14,8 @@ namespace GitHubSearcher.Data
             Client = new HttpClient();
 
             Client.BaseAddress = new Uri("https://api.github.com/");
-            // GitHub API versioning
             Client.DefaultRequestHeaders.Add("Accept", "application/vnd.github.v3+json");
-            // GitHub requires a user-agent
-            Client.DefaultRequestHeaders.Add("User-Agent", "HttpClientFactory-Sample"); //TODO: may I change the user agent?
+            Client.DefaultRequestHeaders.Add("User-Agent", "HttpClientFactory-Sample");
         }
 
 
@@ -32,5 +28,6 @@ namespace GitHubSearcher.Data
             using var responseStream = await response.Content.ReadAsStreamAsync();
             return await JsonSerializer.DeserializeAsync<UserResponse>(responseStream);
         }
+
     }
 }

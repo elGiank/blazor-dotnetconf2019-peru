@@ -1,0 +1,29 @@
+﻿
+<div class="row justify-content-md-center">
+    <div class="col-8">
+        <div class="form-inline md-form mr-auto mb-4 mt-0 active-blue justify-content-md-center">
+            <input @oninput="OnSearchQueryChanged" 
+                   value="@SearchQuery" 
+                   class="form-control" type="text" placeholder="Nombre del usuario"/>
+            <button class="btn btn-outline-primary ml-4" @onclick="SearchFunction">Buscar</button>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string SearchQuery { get; set; }
+
+    [Parameter]
+    public EventCallback SearchFunction { get; set; }
+
+    [Parameter]
+    public EventCallback<string> SearchQueryChanged { get; set; }
+
+    private Task OnSearchQueryChanged(ChangeEventArgs e) 
+    {
+        SearchQuery = e.Value.ToString();
+
+        return SearchQueryChanged.InvokeAsync(SearchQuery);
+    }
+}

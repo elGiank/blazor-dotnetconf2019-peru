@@ -2,63 +2,20 @@
 @using GitHubSearcher.Data
 @inject GitHubService GitService
 
-<h1>Buscador con Blazor</h1>
-<br />
-<h3>Usuarios en GitHub</h3>
-<br />
-<div class="row justify-content-md-center">
-    <div class="col-8">
-        <div class="form-inline md-form mr-auto mb-4 mt-0 active-blue justify-content-md-center">
-            <input class="form-control" type="text" placeholder="Nombre del usuario" @bind="searchParam" @onkeyup="SearchOnPressEnter" />
-            <button class="btn btn-outline-primary ml-4" @onclick="SearchUser">Buscar</button>
-        </div>
-    </div>
+<h1 class="mb-2">Buscador con Blazor</h1>
+<h4 class="mb-5">Usuarios en GitHub</h4>
 
-</div>
-@if (isLoadingResults == true )
-{
-    <div class="text-center mt-5 mb-5">
-        <div class="spinner-border text-primary" role="status">
-            <span class="sr-only">Loading...</span>
-        </div>
-    </div>
-}
+<Searcher SearchFunction="@SearchUser" @bind-SearchQuery="searchParam"></Searcher>
 
-<div class="row justify-content-between">
-    @if (users != null)
-    {
-        @foreach (User user in users)
-        {
-            <div class="col mb-4">
-                <div class="card" style="width: 14rem;">
-                    <div class="card-body">
-                        <img class="img-fluid img-thumbnail mr-3" src="@user.GrabatarUrl" alt="Grabatar">
-                        <div class="media-body">
-                            <h5 class="card-title mt-4"><a href="@user.ProfileUrl" target="_blank">@user.UserName</a></h5>
-                            <h6 class="card-subtitle text-muted mb-2 mt-2 ">Score: @user.Score</h6>
-                            <a href="@user.ReposUrl" target="_blank" class="card-link">Sus repos</a>
-                            <a href="@user.ProfileUrl" target="_blank" class="card-link">Su perfil</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        }
-    }
+<LoadingSpinner IsLoading="isLoadingResults"></LoadingSpinner>
 
-</div>
+<UserSearchResultViewer Users="users"></UserSearchResultViewer>
 
 @code {
 
     private string searchParam;
     private bool isLoadingResults;
     List<User> users;
-
-    //protected override async Task OnInitializedAsync()
-    //{
-    //    var result = await GitService.FindGitHubUsersAsync("tom");
-
-    //    users = result.Users;
-    //}
 
     private async Task SearchUser()
     {
