@@ -1,25 +1,61 @@
 ﻿@page "/repos"
+@using GitHubSearcher.Data;
+@inject GitHubService GitService;
 
-<h1>Buscador con Blazor</h1>
-<br />
-<h3>Usuarios en GitHub</h3>
-<br />
+<h1 class="mb-2">Buscador con Blazor</h1>
+<h4 class="mb-5">Repos en GitHub</h4>
+
 <div class="row justify-content-md-center">
     <div class="col-8">
-        <div class="form-inline md-form mr-auto mb-4 mt-0 active-blue">
-            <input class="form-control" type="text" placeholder="Nombre del usuario" aria-label="Nombre del usuario">
-            <button class="btn btn-outline-primary ml-4">Buscar</button>
+        <div class="form-inline md-form mr-auto mb-4 mt-0 active-blue justify-content-md-center">
+            <input class="form-control" @bind="query" type="text" placeholder="Nombre del repositorio" />
+            <button class="btn btn-outline-primary ml-4" @onclick="PerformSearch">Buscar</button>
         </div>
     </div>
-    <div class="col-8">
-        <div class="card" style="width: 14rem;">
-            <div class="card-body">
-                <h5 class="card-title"><a href="https://github.com/daniel-e/tetros" class="card-link">tetros</a></h5>
-                <h6 class="card-subtitle mb-2 text-muted">daniel-e/tetros</h6>
-                <p class="card-text">Tetris that fits into the boot sector.</p>
-                <a href="https://github.com/daniel-e/tetros" class="card-link">Ver el repo</a>
-                <a href="https://github.com/daniel-e" class="card-link">daniel-e</a>
+</div>
+@if (isLoading == true)
+{
+    <div class="text-center mt-5 mb-5">
+        <div class="spinner-border text-primary" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+}
+
+<div class="row justify-content-between">
+    @if (repos != null)
+    {
+        @foreach (Repository repo in repos)
+        {
+            <div class="col mb-4">
+                <div class="card" style="width: 14rem;">
+                    <div class="card-body">
+                        <h5 class="card-title"><a href="@repo.RepoUrl" class="card-link">@repo.Name</a></h5>
+                        <h6 class="card-subtitle mb-2 text-muted">@repo.FullName</h6>
+                        <p class="card-text">@repo.Description</p>
+                        <a href="@repo.RepoUrl" class="card-link">Ver el repo</a>
+                        <a href="@repo.User.ProfileUrl" class="card-link">daniel-e</a>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-</div>  
+        }
+
+    }
+</div>
+
+@code {
+    private string query;
+    private bool isLoading;
+    private List<Repository> repos;
+
+    private async Task PerformSearch()
+    {
+        isLoading = true;
+
+        var result = await GitService.FindRepositories(query);
+
+        repos = result.Repositories;
+        isLoading = false;
+    }
+
+}

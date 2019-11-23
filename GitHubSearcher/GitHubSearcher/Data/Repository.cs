@@ -17,7 +17,7 @@ namespace GitHubSearcher.Data
         public string RepoUrl { get; set; }
 
         [JsonPropertyName("owner")]
-        public string User { get; set; }
+        public User User { get; set; }
 
     }
 }

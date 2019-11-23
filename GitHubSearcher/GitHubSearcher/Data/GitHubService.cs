@@ -29,5 +29,14 @@ namespace GitHubSearcher.Data
             return await JsonSerializer.DeserializeAsync<UserResponse>(responseStream);
         }
 
+        public async Task<RepositoryResponse> FindRepositories(string query)
+        {
+            var response = await Client.GetAsync($"search/repositories?q={query}&sort=stars&order=desc");
+
+            response.EnsureSuccessStatusCode();
+
+            using var responseStream = await response.Content.ReadAsStreamAsync();
+            return await JsonSerializer.DeserializeAsync<RepositoryResponse>(responseStream);
+        }
     }
 }
